@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
-var nums = new int[] { -1, 0, 1, 2, -1, -4 };
+var nums = new int[] { 0, 0, 0 };
 var solution = new Solution();
 var result = solution.ThreeSum(nums);
 foreach (var item in result)
@@ -12,28 +12,48 @@ public class Solution
 {
     public IList<IList<int>> ThreeSum(int[] nums)
     {
-        var candidates = new List<List<int>>();
-        for (int i = 0; i < nums.Length - 2; i++)
-        {
-            for (int j = i + 1; j < nums.Length - 1; j++)
-            {
-                for (int k = j + 1; k < nums.Length; k++)
-                {
-                    var candidate = new List<int> { nums[i], nums[j], nums[k] };
-                    candidates.Add(candidate);
-                }
-            }
-        }
-
+        Array.Sort(nums);
         var result = new List<IList<int>>();
-        foreach (var candidate in candidates)
+        for (int i = 0; i < nums.Length; i++)
         {
-            if (candidate[0] + candidate[1] + candidate[2] == 0)
+            if (nums[i] > 0)
             {
-                result.Add(candidate);
+                continue;
+            }
+            else if (i == 0 || nums[i - 1] != nums[i])
+            {
+                result.AddRange(ThreeSum(nums, i));
             }
         }
         return result;
+    }
 
+    private IList<IList<int>> ThreeSum(int[] nums, int i)
+    {
+        var low = i + 1;
+        var high = nums.Length - 1;
+        var result = new List<IList<int>>();
+        while (low < high)
+        {
+            if (nums[i] + nums[low] + nums[high] == 0)
+            {
+                result.Add(new List<int> { nums[i], nums[low], nums[high] });
+                low++;
+                high--;
+                while (low < high && nums[low - 1] == nums[low])
+                {
+                    low++;
+                }
+            }
+            else if (nums[i] + nums[low] + nums[high] > 0)
+            {
+                high--;
+            }
+            else
+            {
+                low++;
+            }
+        }
+        return result;
     }
 }
