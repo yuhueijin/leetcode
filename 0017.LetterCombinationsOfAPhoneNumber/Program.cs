@@ -10,39 +10,37 @@ foreach (var item in result)
 
 public class Solution
 {
+    private Dictionary<char, string> letters = new Dictionary<char, string> {
+            { '2', "abc" }, { '3', "def" }, { '4', "ghi" },
+            { '5', "jkl" }, { '6', "mno" }, { '7', "pqrs" },
+            { '8', "tuv" }, { '9', "wxyz" }};
+
     public IList<string> LetterCombinations(string digits)
     {
-        var letters = new List<List<string>>();
-        letters.Add(new List<string> { "a", "b", "c" });
-        letters.Add(new List<string> { "d", "e", "f" });
-        letters.Add(new List<string> { "g", "h", "i" });
-        letters.Add(new List<string> { "j", "k", "l" });
-        letters.Add(new List<string> { "m", "n", "o" });
-        letters.Add(new List<string> { "p", "q", "r", "s" });
-        letters.Add(new List<string> { "t", "u", "v" });
-        letters.Add(new List<string> { "w", "x", "y", "z" });
-
-        var result = new List<string>();
-        foreach (var item in digits)
+        if (string.IsNullOrEmpty(digits))
         {
-            var index = (int)char.GetNumericValue(item) - 2;
-            var target = letters[index];
-            if (!result.Any())
-            {
-                result.AddRange(target);
-                continue;
-            }
-            var count = result.Count;
-            for (int i = 0; i < count; i++)
-            {
-                for (int j = 0; j < target.Count; j++)
-                {
-                    result.Add(result[i] + target[j]);
-                }
-            }
-            result.RemoveRange(0, count);
+            return new List<string>();
         }
 
+        var result = new List<string>();
+        LetterCombinations(digits, 0, result, "");
         return result;
+    }
+
+    private void LetterCombinations(string digits, int index, List<string> result, string line)
+    {
+        if (digits.Length == line.Length)
+        {
+            result.Add(line);
+            return;
+        }
+
+        var possibleLetters = letters[digits[index]];
+        foreach (var letter in possibleLetters)
+        {
+            line += letter;
+            LetterCombinations(digits, index + 1, result, line);
+            line = line.Remove(line.Length - 1);
+        }
     }
 }
