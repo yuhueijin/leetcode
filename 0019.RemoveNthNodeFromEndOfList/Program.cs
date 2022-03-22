@@ -22,30 +22,20 @@ public class Solution
 {
     public ListNode RemoveNthFromEnd(ListNode head, int n)
     {
-        var current = head;
-        var count = 0;
-        while (current != null)
+        var dummy = new ListNode(0, head);
+        var first = dummy;
+        var second = dummy;
+        for (int i = 0; i < n + 1; i++)
         {
-            count++;
-            current = current.next;
+            first = first.next;
         }
-        var removePos = count - n;
-        current = head;
-        if (removePos == 0)
+
+        while (first != null)
         {
-            return current?.next == null ? null : current.next;
+            first = first.next;
+            second = second.next;
         }
-        var currentPos = 1;
-        while (current != null)
-        {
-            if (currentPos == removePos)
-            {
-                current.next = current.next.next;
-                break;
-            }
-            current = current.next;
-            currentPos++;
-        }
-        return head;
+        second.next = second.next.next;
+        return dummy.next;
     }
 }
