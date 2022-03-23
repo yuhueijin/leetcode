@@ -13,30 +13,29 @@ public class Solution
     public IList<string> GenerateParenthesis(int n)
     {
         var results = new List<string>();
-        if (n == 0)
+        Backtrack(results, "", 0, 0, n);
+        return results;
+    }
+    private void Backtrack(List<string> results, string result, int start, int end, int max)
+    {
+        if (result.Length == max * 2)
         {
-            results.Add("");
-        }
-        else
-        {
-            for (int i = 0; i < n; i++)
-            {
-                var items = GenerateParenthesis(n - i - 1);
-                var subs = GenerateParenthesis(i);
-                foreach (var item in items)
-                {
-                    foreach (var sub in subs)
-                    {
-                        var target = $"({sub}){item}";
-                        if (!results.Contains(target))
-                        {
-                            results.Add(target);
-                        }
-                    }
-                }
-            }
+            results.Add(result);
+            return;
         }
 
-        return results;
+        if (start < max)
+        {
+            result += "(";
+            Backtrack(results, result, start + 1, end, max);
+            result = result.Substring(0, result.Length - 1);
+        }
+
+        if (end < start)
+        {
+            result += ")";
+            Backtrack(results, result, start, end + 1, max);
+            result = result.Substring(0, result.Length - 1);
+        }
     }
 }
