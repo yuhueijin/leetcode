@@ -13,37 +13,25 @@ public class Solution
     public IList<string> GenerateParenthesis(int n)
     {
         var results = new List<string>();
-        if (n == 1)
+        if (n == 0)
         {
-            results.Add("()");
-            return results;
+            results.Add("");
         }
-
-        for (int i = 1; i < n; i++)
+        else
         {
-            var items = GenerateParenthesis(n - i);
-            var subs = GenerateParenthesis(i);
-            foreach (var item in items)
+            for (int i = 0; i < n; i++)
             {
-                if (i == 1)
+                var items = GenerateParenthesis(n - i - 1);
+                var subs = GenerateParenthesis(i);
+                foreach (var item in items)
                 {
-                    var result = $"({item})";
-                    if (!results.Contains(result))
+                    foreach (var sub in subs)
                     {
-                        results.Add(result);
-                    }
-                }
-                foreach (var sub in subs)
-                {
-                    var target = $"{sub}{item}";
-                    if (!results.Contains(target))
-                    {
-                        results.Add(target);
-                    }
-                    target = $"{item}{sub}";
-                    if (!results.Contains(target))
-                    {
-                        results.Add(target);
+                        var target = $"({sub}){item}";
+                        if (!results.Contains(target))
+                        {
+                            results.Add(target);
+                        }
                     }
                 }
             }
