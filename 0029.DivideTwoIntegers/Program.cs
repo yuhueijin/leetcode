@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
-var dividend = 10;
-var divisor = -3;
+var dividend = 2147483647;
+var divisor = 2;
 var solution = new Solution();
 var result = solution.Divide(dividend, divisor);
 Console.WriteLine(result);
@@ -10,43 +10,40 @@ public class Solution
 {
     public int Divide(int dividend, int divisor)
     {
-        var count = 0;
-        var minus = false;
-        var positive = true;
-        if (dividend < 0)
+        if (dividend == int.MinValue && divisor == -1)
         {
-            positive = false;
+            return int.MaxValue;
         }
-        if (dividend > 0 && divisor < 0)
+
+        var negatives = 2;
+        if (dividend > 0)
         {
-            minus = true;
+            negatives--;
+            dividend = -dividend;
         }
-        if (dividend < 0 && divisor > 0)
+        if (divisor > 0)
         {
-            minus = true;
+            negatives--;
+            divisor = -divisor;
         }
-        while (true)
+        var quotient = 0;
+        while (divisor >= dividend)
         {
-            if (positive && dividend < 0)
+            var powerOfTwo = -1;
+            var value = divisor;
+            while (int.MinValue / 2 <= value && dividend <= value + value)
             {
-                break;
-            }
-            if (!positive && dividend > 0)
-            {
-                break;
+                value = value + value;
+                powerOfTwo += powerOfTwo;
             }
 
-            if (minus)
-            {
-                dividend += divisor;
-                count--;
-            }
-            else
-            {
-                dividend -= divisor;
-                count++;
-            }
+            quotient += powerOfTwo;
+            dividend -= value;
         }
-        return count > 0 ? --count : ++count;
+        if (negatives != 1)
+        {
+            quotient = -quotient;
+        }
+        return quotient;
     }
 }
