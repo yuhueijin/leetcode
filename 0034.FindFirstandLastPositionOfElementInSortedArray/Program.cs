@@ -13,53 +13,50 @@ public class Solution
 {
     public int[] SearchRange(int[] nums, int target)
     {
-        var start = 0;
-        var end = nums.Length - 1;
-        // find first
-        var firstPos = -1;
-        while (start <= end)
-        {
-            var mid = (start + end) / 2;
-            if (nums[mid] > target)
-            {
-                end = mid - 1;
-            }
-            else if (nums[mid] < target)
-            {
-                start = mid + 1;
-            }
-            else
-            {
-                if (mid == start || nums[mid - 1] != target)
-                {
-                    firstPos = mid;
-                }
-                end = mid - 1;
-            }
-        }
-        start = 0;
-        end = nums.Length - 1;
-        var secondPos = -1;
-        while (start <= end)
-        {
-            var mid = (start + end) / 2;
-            if (nums[mid] > target)
-            {
-                end = mid - 1;
-            }
-            else if (nums[mid] < target)
-            {
-                start = mid + 1;
-            }
-            else
-            {
-                if (mid == end || nums[mid + 1] != target)
-                {
-                    secondPos = mid;
-                }
-                start = mid + 1;
-            }
-        }
+        var firstPos = findBound(nums, target, true);
+        var secondPos = findBound(nums, target, false);
         return new int[] { firstPos, secondPos };
     }
+
+    private int findBound(int[] nums, int target, bool isFirst)
+    {
+        var start = 0;
+        var end = nums.Length - 1;
+
+        while (start <= end)
+        {
+            var mid = (start + end) / 2;
+            if (nums[mid] > target)
+            {
+                end = mid - 1;
+            }
+            else if (nums[mid] < target)
+            {
+                start = mid + 1;
+            }
+            else
+            {
+                if (isFirst)
+                {
+                    if (mid == start || nums[mid - 1] != target)
+                    {
+                        return mid;
+                    }
+                    end = mid - 1;
+                }
+                else
+                {
+
+                    if (mid == end || nums[mid + 1] != target)
+                    {
+                        return mid;
+                    }
+                    start = mid + 1;
+                }
+            }
+        }
+
+        return -1;
+    }
 }
+
