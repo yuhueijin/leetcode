@@ -15,7 +15,8 @@ public class Solution
     {
         var start = 0;
         var end = nums.Length - 1;
-        var pos = -1;
+        // find first
+        var firstPos = -1;
         while (start <= end)
         {
             var mid = (start + end) / 2;
@@ -29,24 +30,36 @@ public class Solution
             }
             else
             {
-                pos = mid;
-                break;
+                if (mid == start || nums[mid - 1] != target)
+                {
+                    firstPos = mid;
+                }
+                end = mid - 1;
             }
         }
-        if (pos == -1)
+        start = 0;
+        end = nums.Length - 1;
+        var secondPos = -1;
+        while (start <= end)
         {
-            return new int[] { -1, -1 };
+            var mid = (start + end) / 2;
+            if (nums[mid] > target)
+            {
+                end = mid - 1;
+            }
+            else if (nums[mid] < target)
+            {
+                start = mid + 1;
+            }
+            else
+            {
+                if (mid == end || nums[mid + 1] != target)
+                {
+                    secondPos = mid;
+                }
+                start = mid + 1;
+            }
         }
-        var right = pos;
-        var left = pos;
-        while (right >= 0 && nums[right] == target)
-        {
-            right--;
-        }
-        while (left < nums.Length && nums[left] == target)
-        {
-            left++;
-        }
-        return new int[] { ++right, --left };
+        return new int[] { firstPos, secondPos };
     }
 }
