@@ -18,73 +18,45 @@ public class Solution
 {
     public bool IsValidSudoku(char[][] board)
     {
-        for (int i = 0; i < board.Length; i++)
+        var n = 9;
+        var rows = new List<HashSet<char>>();
+        var columns = new List<HashSet<char>>();
+        var boxes = new List<HashSet<char>>();
+        for (int i = 0; i < n; i++)
         {
-            var row = new List<char>();
-            var column = new List<char>();
-            for (int j = 0; j < board[i].Length; j++)
-            {
-                row.Add(board[i][j]);
-                column.Add(board[j][i]);
-            }
-            if (!IsValidSudoku(row.ToArray()))
-            {
-                return false;
-            }
-            if (!IsValidSudoku(column.ToArray()))
-            {
-                return false;
-            }
+            rows.Add(new HashSet<char>());
+            columns.Add(new HashSet<char>());
+            boxes.Add(new HashSet<char>());
         }
-
-        var firstSquare = new List<char>();
-        var secondSquare = new List<char>();
-        var thirdSquare = new List<char>();
-        for (int i = 0; i < board.Length; i++)
+        
+        for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < board[i].Length; j++)
+            for (int j = 0; j < n; j++)
             {
-                if (j < 3)
+                if (board[i][j] == '.')
                 {
-                    firstSquare.Add(board[i][j]);
+                    continue;
                 }
-                else if (j < 6)
-                {
-                    secondSquare.Add(board[i][j]);
-                }
-                else
-                {
-                    thirdSquare.Add(board[i][j]);
-                }
-            }
-            if (i == 2 || i == 5 || i == 8)
-            {
-                if (!IsValidSudoku(firstSquare.ToArray()) || !IsValidSudoku(secondSquare.ToArray())
-                || !IsValidSudoku(thirdSquare.ToArray()))
+
+                if (rows[j].Contains(board[i][j]))
                 {
                     return false;
                 }
-                firstSquare.Clear();
-                secondSquare.Clear();
-                thirdSquare.Clear();
+                rows[j].Add(board[i][j]);
+
+                if (columns[i].Contains(board[i][j]))
+                {
+                    return false;
+                }
+                columns[i].Add(board[i][j]);
+
+                var index = (i / 3) * 3 + j / 3;
+                if (boxes[index].Contains(board[i][j]))
+                {
+                    return false;
+                }
+                boxes[index].Add(board[i][j]);
             }
-        }
-        return true;
-    }
-    private bool IsValidSudoku(char[] line)
-    {
-        var set = new HashSet<char>();
-        for (int i = 0; i < line.Length; i++)
-        {
-            if (line[i] == '.')
-            {
-                continue;
-            }
-            if (set.Contains(line[i]))
-            {
-                return false;
-            }
-            set.Add(line[i]);
         }
         return true;
     }
