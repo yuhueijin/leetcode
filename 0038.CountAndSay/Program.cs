@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
-var n = 4;
+var n = 10;
 var solution = new Solution();
 var result = solution.CountAndSay(n);
 Console.WriteLine(result);
@@ -34,10 +34,8 @@ public class Solution
                 element = input[i];
             }
         }
-        if (count != 0)
-        {
-            result += $"{count}{element}";
-        }
+
+        result += $"{count}{element}";
         return result;
     }
 }
