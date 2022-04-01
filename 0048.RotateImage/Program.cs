@@ -17,15 +17,23 @@ public class Solution
     public void Rotate(int[][] matrix)
     {
         var n = matrix.Length;
-        for (int y = 0; y < (n + 1) / 2; y++)
+        for (int i = 0; i < n; i++)
         {
-            for (int x = 0; x < n / 2; x++)
+            for (int j = i + 1; j < n; j++)
             {
-                var temp = matrix[n - 1 - x][y];
-                matrix[n - 1 - x][y] = matrix[n - 1 - y][n - 1 - x];
-                matrix[n - 1 - y][n - 1 - x] = matrix[x][n - 1 - y];
-                matrix[x][n - 1 - y] = matrix[y][x];
-                matrix[y][x] = temp;
+                var temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n / 2; j++)
+            {
+                var temp = matrix[i][j];
+                matrix[i][j] = matrix[i][n - 1 - j];
+                matrix[i][n - 1 - j] = temp;
             }
         }
     }
