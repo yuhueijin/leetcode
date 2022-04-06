@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
-var strs = new string[] { };
+var strs = new string[] { "bdddddddddd", "bbbbbbbbbbc" };
 var solution = new Solution();
 var result = solution.GroupAnagrams(strs);
 
@@ -13,9 +13,12 @@ public class Solution
         var dict = new Dictionary<string, List<string>>();
         foreach (var item in strs)
         {
-            var charArray = item.ToArray();
-            Array.Sort(charArray);
-            var target = new string(charArray);
+            var charCount = new int[26];
+            foreach (var charItem in item)
+            {
+                charCount[charItem - 'a']++;
+            }
+            var target = string.Join("#", charCount);
             if (dict.ContainsKey(target))
             {
                 dict[target].Add(item);
