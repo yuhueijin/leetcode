@@ -16,11 +16,24 @@ public class Solution
             x = 1 / x;
             pow = -pow;
         }
-        double response = 1;
-        for (int i = 0; i < pow; i++)
+
+        return fastPow(x, pow);
+    }
+
+    private double fastPow(double x, int pow)
+    {
+        if (pow == 0)
         {
-            response = response * x;
+            return 1.0;
         }
-        return response;
+        var half = fastPow(x, pow / 2);
+        if (pow % 2 == 0)
+        {
+            return half * half;
+        }
+        else
+        {
+            return half * half * x;
+        }
     }
 }
