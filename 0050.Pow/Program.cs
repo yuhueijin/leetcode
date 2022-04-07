@@ -10,21 +10,17 @@ public class Solution
 {
     public double MyPow(double x, int n)
     {
-        var count = 0;
-        double result = 1;
-        while ((n > 0 && count < n) || (n < 0 && count > n))
+        var pow = n;
+        if (pow < 0)
         {
-            if (n > 0)
-            {
-                result = result * x;
-                count++;
-            }
-            else
-            {
-                result = result / x;
-                count--;
-            }
+            x = 1 / x;
+            pow = -pow;
         }
-        return result;
+        double response = 1;
+        for (int i = 0; i < pow; i++)
+        {
+            response = response * x;
+        }
+        return response;
     }
 }
